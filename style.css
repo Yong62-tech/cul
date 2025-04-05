@@ -9,55 +9,55 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* 保证垂直居中 */
     padding: 40px;
     gap: 40px;
 }
 
 .calculator {
-    background-color: #fff;
+    background-color: #333; /* 计算器背景为深色 */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 #display {
     width: 100%;
-    padding: 20px 15px; /* 增加内边距 */
-    font-size: 2.5em; /* 更大的字体 */
+    padding: 15px 10px;
+    font-size: 3em; /* 更大的字体 */
     text-align: right;
     border: none;
-    background-color: #444;
+    background-color: #444; /* 背景色更暗 */
     color: #fff;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-bottom: 15px;
     box-sizing: border-box;
 }
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 更均匀的按钮排列 */
+    grid-template-columns: repeat(4, 1fr); /* 4列 */
     gap: 10px;
-    max-width: 280px; /* 限制按钮区域的最大宽度 */
+    max-width: 300px; /* 设置一个最大宽度 */
 }
 
 button {
-    padding: 20px;
-    font-size: 1.5em; /* 更大字体 */
+    padding: 15px;
+    font-size: 1.5em;
     border-radius: 8px;
-    background-color: #333;
+    background-color: #555; /* 默认按钮颜色 */
     color: white;
     transition: background-color 0.2s ease;
-    height: 60px; /* 设置固定高度 */
+    height: 60px;
 }
 
 button.operator {
-    background-color: #f0ad4e; /* 操作符颜色 */
+    background-color: #f0ad4e; /* 操作符按钮的颜色 */
 }
 
 button.equals {
     background-color: #5cb85c;
-    grid-column: span 2; /* 合并等号按钮 */
+    grid-column: span 2; /* 让“=”按钮跨两列 */
 }
 
 button.clear {
@@ -68,9 +68,12 @@ button.zero {
     grid-column: span 2; /* 将零按钮跨两列 */
 }
 
-
 .history-section {
     width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 #history-table-container {
