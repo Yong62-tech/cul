@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="main-container">
-
         <div class="calculator">
             <input type="text" id="display" readonly>
             <div class="buttons">
@@ -30,7 +29,7 @@
                 <button onclick="appendToDisplay('1')">1</button>
                 <button onclick="appendToDisplay('2')">2</button>
                 <button onclick="appendToDisplay('3')">3</button>
-                <button onclick="calculateResult()" class="equals" rowspan="2">=</button>
+                <button onclick="calculateResult()" class="equals">=</button>
 
                 <button onclick="appendToDisplay('0')" class="zero">0</button>
                 <button onclick="appendToDisplay('.')">.</button>
@@ -47,13 +46,13 @@
                             <th>结果</th>
                         </tr>
                     </thead>
-                    <tbody id="history-body">
-                        </tbody>
+                    <tbody id="history-body"></tbody>
                 </table>
             </div>
             <button id="clear-history" onclick="clearHistoryLog()">清除历史</button>
         </div>
+    </div>
 
-    </div> <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
