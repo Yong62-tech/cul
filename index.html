@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简易计算器</title>
+    <title>带历史记录的计算器</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,6 +33,13 @@
             <button onclick="appendToDisplay('0')" class="zero">0</button>
             <button onclick="appendToDisplay('.')">.</button>
         </div>
+    </div>
+
+    <div class="history-container">
+        <h2>计算历史</h2>
+        <ul id="history-list">
+            </ul>
+        <button id="clear-history" onclick="clearHistoryLog()">清除历史</button>
     </div>
 
     <script src="script.js"></script>
