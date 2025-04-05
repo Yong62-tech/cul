@@ -1,7 +1,14 @@
+// --- script.js (包含调试信息) ---
+
 // 获取 DOM 元素
 const display = document.getElementById('display');
 const historyBody = document.getElementById('history-body');
-const historyTableContainer = document.getElementById('history-table-container'); // 获取滚动容器
+const historyTableContainer = document.getElementById('history-table-container');
+
+// --- 调试：检查元素是否获取成功 ---
+if (!display) console.error("未能找到 ID 为 'display' 的元素");
+if (!historyBody) console.error("未能找到 ID 为 'history-body' 的元素");
+if (!historyTableContainer) console.error("未能找到 ID 为 'history-table-container' 的元素!"); // <-- 检查这个！
 
 // 用于存储历史记录的数组 (stores objects)
 let calculationHistory = [];
@@ -10,87 +17,72 @@ let isResultDisplayed = false;
 
 // --- appendToDisplay 函数 ---
 function appendToDisplay(value) {
+    // console.log("appendToDisplay called with:", value); // 可选调试
     const operators = ['/', '*', '-', '+'];
     const isOperator = operators.includes(value);
     const isNumberOrDot = /[0-9.]/.test(value);
 
-    // **核心逻辑：处理“=”之后首次输入的情况**
     if (isResultDisplayed) {
         if (isNumberOrDot) {
-            // 清除旧结果，用新输入值替换显示内容
-            if (value === '.') {
-                display.value = '0.'; // 特殊处理直接输入小数点
-            } else {
-                display.value = value; // 用新数字替换结果
-            }
-            isResultDisplayed = false; // 清除标志
-            return; // **重要：** 替换后终止函数
-        } else if (isOperator) {
-            // 不清除结果，只清除标志，让后续逻辑拼接运算符
+            if (value === '.') { display.value = '0.'; }
+            else { display.value = value; }
             isResultDisplayed = false;
-            // **重要：** 不 return，让代码继续执行
+            return;
+        } else if (isOperator) {
+            isResultDisplayed = false;
         }
     }
 
-    // --- 常规输入处理逻辑 ---
-    if (display.value === '错误') {
-        clearDisplay();
-    }
+    if (display.value === '错误') { clearDisplay(); }
 
     const lastChar = display.value.slice(-1);
     const lastIsOperator = operators.includes(lastChar);
 
-    // 处理连续运算符
     if (lastIsOperator && isOperator) {
         display.value = display.value.slice(0, -1) + value;
         return;
     }
 
-    // 处理小数点
     if (value === '.') {
         const currentSegment = display.value.split(/[\/*+-]/).pop();
-        if (currentSegment.includes('.')) {
-            return;
-        }
+        if (currentSegment.includes('.')) { return; }
         if (display.value === '' || lastIsOperator) {
             display.value += '0.';
             return;
         }
     }
 
-    // 处理前导零
     if (display.value === '0' && value !== '.') {
         display.value = value;
         return;
     }
 
-    // 默认追加
     display.value += value;
 }
 
 // --- clearDisplay 函数 ---
 function clearDisplay() {
+    // console.log("clearDisplay called"); // 可选调试
     display.value = '';
-    isResultDisplayed = false; // 重置标志
+    isResultDisplayed = false;
 }
 
 // --- deleteLast 函数 ---
 function deleteLast() {
+    // console.log("deleteLast called"); // 可选调试
     if (display.value === '错误') {
         clearDisplay();
     } else {
         const newValue = display.value.slice(0, -1);
-         if (newValue === '' || newValue === '-') {
-            display.value = '';
-         } else {
-            display.value = newValue;
-         }
-        isResultDisplayed = false; // 删除操作后重置标志
+         if (newValue === '' || newValue === '-') { display.value = ''; }
+         else { display.value = newValue; }
+        isResultDisplayed = false;
     }
 }
 
 // --- calculateResult 函数 ---
 function calculateResult() {
+    // console.log("calculateResult called"); // 可选调试
     const expression = display.value;
      if (!expression || expression === '-' || expression === '错误' || ['/', '*', '-', '+'].includes(expression.slice(-1))) {
           return;
@@ -103,51 +95,80 @@ function calculateResult() {
         if (typeof result === 'number' && !Number.isInteger(result)) {
             result = parseFloat(result.toFixed(10));
         }
-        if (!Number.isFinite(result)) {
-             throw new Error("结果无效");
-        }
+        if (!Number.isFinite(result)) { throw new Error("结果无效"); }
 
         const resultString = result.toString();
         display.value = resultString;
-        isResultDisplayed = true; // **设置标志：表示显示的是结果**
+        isResultDisplayed = true;
 
-        addToHistory({ expression: expression, result: resultString }); // 添加历史记录
+        console.log("计算成功，准备添加历史记录:", { expression: expression, result: resultString }); // 调试
+        addToHistory({ expression: expression, result: resultString });
 
     } catch (error) {
-        console.error("Calculation Error:", error);
+        console.error("计算错误:", error); // 调试
         display.value = '错误';
-        isResultDisplayed = false; // **重置标志：计算出错**
+        isResultDisplayed = false;
     }
 }
 
 // --- History Functions ---
 function addToHistory(entryObject) {
-    calculationHistory.unshift(entryObject); // 添加到数组开头
-    updateHistoryDisplay(); // 更新表格显示
+    console.log("添加到历史记录数组:", entryObject); // 调试
+    calculationHistory.unshift(entryObject);
+    updateHistoryDisplay(); // 确保调用了更新函数
 }
 
 function updateHistoryDisplay() {
-    // 清空现有表格行
-    historyBody.innerHTML = '';
+    console.log("开始更新历史记录显示..."); // 调试
 
-    // 用历史数据填充表格
-    calculationHistory.forEach(entry => {
-        const row = historyBody.insertRow(0); // 在 tbody 的最顶部插入新行
-        const cellExpression = row.insertCell(0);
-        const cellResult = row.insertCell(1);
-        cellExpression.textContent = entry.expression;
-        cellResult.textContent = entry.result;
-    });
-
-    // **自动滚动到顶部**
-    if (historyTableContainer) { // 确保元素已获取
-        historyTableContainer.scrollTop = 0; // 将滚动条设置到顶部
+    // 再次检查 historyBody 是否有效
+    if (!historyBody) {
+        console.error("错误: updateHistoryDisplay 中 historyBody 无效!");
+        return;
     }
+    historyBody.innerHTML = ''; // 清空表格体
+
+    // 填充表格
+    if (calculationHistory && Array.isArray(calculationHistory)) {
+        calculationHistory.forEach(entry => {
+            const row = historyBody.insertRow(0); // 在顶部插入行
+            const cellExpression = row.insertCell(0);
+            const cellResult = row.insertCell(1);
+            // 基本检查 entry 对象
+            cellExpression.textContent = (entry && entry.expression !== undefined) ? entry.expression : '无效表达式';
+            cellResult.textContent = (entry && entry.result !== undefined) ? entry.result : '无效结果';
+        });
+         console.log(`历史记录表格已更新，共 ${calculationHistory.length} 条记录。`); // 调试
+    } else {
+         console.warn("calculationHistory 不是有效的数组。"); // 调试
+    }
+
+
+    // **尝试滚动到顶部**
+    if (historyTableContainer) { // 检查容器元素是否存在
+        console.log("尝试将 historyTableContainer 滚动到顶部..."); // 调试
+        historyTableContainer.scrollTop = 0; // <--- 关键代码
+        // --- 调试：检查滚动是否生效 ---
+        // 使用 setTimeout 稍微延迟检查 scrollTop 值，给浏览器一点反应时间
+        setTimeout(() => {
+            if (historyTableContainer.scrollTop === 0) {
+                console.log("滚动成功，scrollTop 现在是 0。"); // 调试
+            } else {
+                console.warn(`滚动可能未生效或被覆盖，scrollTop 现在是: ${historyTableContainer.scrollTop}`); // 调试
+            }
+        }, 100); // 延迟 100 毫秒检查
+
+    } else {
+        // 这个错误应该在页面加载时就被上面的 console.error 捕获了
+        console.error("错误: updateHistoryDisplay 中 historyTableContainer 无效! 无法滚动。");
+    }
+     console.log("结束更新历史记录显示。"); // 调试
 }
 
 function clearHistoryLog() {
-    calculationHistory = []; // 清空数组
-    updateHistoryDisplay(); // 更新显示 (表格变为空，滚动条也会回到顶部)
+    console.log("清除历史记录..."); // 调试
+    calculationHistory = [];
+    updateHistoryDisplay(); // 更新显示为空白
 }
 
 // --- Optional LocalStorage functions ---
