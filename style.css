@@ -19,7 +19,7 @@ body {
     justify-content: center;
 }
 
-/* --- 计算器样式 (基本不变) --- */
+/* --- 计算器样式 --- */
 .calculator {
     background-color: #333;
     border-radius: 10px;
@@ -98,11 +98,14 @@ button:active { background-color: #777; }
     flex-shrink: 0;
 }
 
+/* 可滚动的表格容器 */
 .history-table-container {
     flex-grow: 1; /* Allow table container to grow */
     overflow-y: auto; /* Add scrollbar if content overflows */
     max-height: 350px; /* Set a max-height for the scrollable area */
     margin-bottom: 10px; /* Space before the clear button */
+    border: 1px solid #ccc; /* Optional: Add border to see container */
+    background-color: #fff; /* Optional: background for table area */
 }
 
 table {
@@ -123,6 +126,7 @@ th, td {
     text-align: right; /* Align text to the right */
     font-size: 0.9em;
     word-wrap: break-word; /* Wrap long text */
+    vertical-align: top; /* Align text to top of cell */
 }
 
 th {
@@ -132,6 +136,9 @@ th {
 
 tbody tr:nth-child(even) {
     background-color: #f9f9f9; /* Zebra striping for rows */
+}
+tbody tr:hover {
+    background-color: #f1f1f1; /* Optional: hover effect */
 }
 
 #clear-history {
@@ -146,6 +153,7 @@ tbody tr:nth-child(even) {
     color: #fff;
     transition: background-color 0.2s ease;
     flex-shrink: 0; /* Prevent button from shrinking */
+    margin-top: auto; /* Push button to bottom if container has extra space */
 }
 
 #clear-history:hover {
