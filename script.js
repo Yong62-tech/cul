@@ -1,9 +1,12 @@
 // 获取 DOM 元素
 const display = document.getElementById('display');
-const historyList = document.getElementById('history-list');
+const historyBody = document.getElementById('history-body'); // Target the tbody
 
-// 用于存储历史记录的数组
+// 用于存储历史记录的数组 (stores objects now)
 let calculationHistory = [];
+
+// --- appendToDisplay, clearDisplay, deleteLast remain largely the same ---
+// (Included here for completeness)
 
 // 向显示屏追加内容
 function appendToDisplay(value) {
@@ -14,9 +17,8 @@ function appendToDisplay(value) {
     const lastIsDot = lastChar === '.';
     const isDot = value === '.';
 
-    // 处理特殊情况以改善用户体验
     if (display.value === '错误') {
-        clearDisplay(); // 如果是错误状态，先清空
+        clearDisplay();
     }
 
     if (lastIsOperator && isOperator) {
@@ -65,83 +67,97 @@ function calculateResult() {
     if (!expression || expression === '错误') return;
 
     try {
-        // 修正一些可能导致错误的表达式，例如以运算符结尾
         let safeExpression = expression;
         const operators = ['/', '*', '-', '+'];
+        // Remove trailing operator for calculation, but keep original expression for history
         if (operators.includes(safeExpression.slice(-1))) {
-            safeExpression = safeExpression.slice(0, -1); // 移除末尾的操作符
+            safeExpression = safeExpression.slice(0, -1);
         }
 
-        if (!safeExpression) return; // 如果移除后为空，则不计算
+        if (!safeExpression) return;
 
-        // 使用 Function 构造函数进行计算
         const calculate = new Function('return ' + safeExpression);
         let result = calculate();
 
-        // 处理浮点数精度
         if (typeof result === 'number' && !Number.isInteger(result)) {
             result = parseFloat(result.toFixed(10));
         }
 
-        // 检查结果是否为 NaN 或 Infinity
         if (!Number.isFinite(result)) {
-             throw new Error("结果无效"); // 抛出错误以显示 "错误"
+             throw new Error("结果无效");
         }
 
+        const resultString = result.toString(); // Convert result to string for display
+        display.value = resultString;
 
-        display.value = result;
-
-        // 添加到历史记录 (只有在原始表达式和计算结果都有效时)
-        const historyEntry = `${expression} = ${result}`; // 使用原始表达式记录
-        addToHistory(historyEntry);
+        // Add to history as an object
+        addToHistory({ expression: expression, result: resultString }); // Use original expression
 
     } catch (error) {
-        console.error("Calculation Error:", error); // 在控制台打印错误详情
+        console.error("Calculation Error:", error);
         display.value = '错误';
-        // 不自动清除错误信息，让用户手动清除
-        // setTimeout(clearDisplay, 1500);
     }
 }
 
-// 添加条目到历史记录数组并更新显示
-function addToHistory(entry) {
-    calculationHistory.unshift(entry); // 添加到数组开头
+// --- History Functions Updated for Table ---
 
-    // (可选) 限制历史记录的数量
+// 添加条目到历史记录数组并更新显示
+function addToHistory(entryObject) {
+    // entryObject should be { expression: "...", result: "..." }
+    calculationHistory.unshift(entryObject); // Add to the beginning of the array
+
+    // Optional: Limit history size
     // if (calculationHistory.length > 20) {
-    //     calculationHistory.pop();
+    //     calculationHistory.pop(); // Remove the oldest entry
     // }
 
-    updateHistoryDisplay(); // 更新页面显示
+    updateHistoryDisplay(); // Update the table display
 }
 
-// 更新页面上的历史记录列表
+// 更新页面上的历史记录表格
 function updateHistoryDisplay() {
-    historyList.innerHTML = ''; // 清空当前列表
+    // Clear existing table rows
+    historyBody.innerHTML = '';
 
+    // Populate table with history data (newest first because we use unshift)
     calculationHistory.forEach(entry => {
-        const listItem = document.createElement('li');
-        listItem.textContent = entry;
-        historyList.appendChild(listItem);
+        const row = historyBody.insertRow(); // Inserts a row at the end of tbody
+
+        const cellExpression = row.insertCell(0);
+        const cellResult = row.insertCell(1);
+
+        cellExpression.textContent = entry.expression;
+        cellResult.textContent = entry.result;
+    });
+
+     // Optional: If using insertRow(0) to add at top, reverse the array first for correct order,
+     // or just use insertRow() and let unshift handle the newest-first logic.
+     // The current code uses unshift + insertRow(), effectively showing newest at the bottom.
+     // To show newest at top with insertRow(): Iterate calculationHistory in reverse.
+     // Or use insertRow(0) instead of insertRow() and iterate normally. Let's switch to insertRow(0):
+
+     /* Revised loop for newest-at-top */
+     historyBody.innerHTML = ''; // Clear again before revised loop
+     calculationHistory.forEach(entry => {
+        const row = historyBody.insertRow(0); // Insert row at the TOP of tbody
+
+        const cellExpression = row.insertCell(0);
+        const cellResult = row.insertCell(1);
+
+        cellExpression.textContent = entry.expression;
+        cellResult.textContent = entry.result;
     });
 }
 
 // 清除历史记录（由按钮调用）
 function clearHistoryLog() {
-    calculationHistory = []; // 清空数组
-    updateHistoryDisplay(); // 更新显示（变为空）
+    calculationHistory = []; // Clear the array
+    updateHistoryDisplay(); // Update the display (empties the table body)
 }
 
-// (可选) 页面加载时可以尝试从 localStorage 加载/保存历史记录
-// function loadHistory() {
-//     const savedHistory = localStorage.getItem('calculatorHistory');
-//     if (savedHistory) {
-//         calculationHistory = JSON.parse(savedHistory);
-//         updateHistoryDisplay();
-//     }
-// }
-// function saveHistory() {
-//     localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
-// }
-// 在 addToHistory 和 clearHistoryLog 中调用 saveHistory()
+// --- End of History Functions ---
+
+// Optional: Load/Save history from localStorage (add calls in relevant functions)
+// function loadHistory() { ... }
+// function saveHistory() { ... }
 // window.onload = loadHistory;
