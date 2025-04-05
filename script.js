@@ -42,12 +42,13 @@ function updateHistoryDisplay() {
         cellResult.textContent = entry.result;
     });
 
-    requestAnimationFrame(() => {
-        historyTableContainer.scrollTo({
-            top: historyTableContainer.scrollHeight,
-            behavior: 'instant'
-        });
+requestAnimationFrame(() => {
+    historyTableContainer.scrollTo({
+        top: historyTableContainer.scrollHeight,
+        behavior: 'auto'  // 或 'smooth'，看你喜好
     });
+});
+
 }
 
 function clearHistoryLog() {
