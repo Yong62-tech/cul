@@ -9,55 +9,55 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center; /* 保证垂直居中 */
-    padding: 40px;
+    align-items: center; /* 垂直居中 */
+    padding: 20px;
     gap: 40px;
 }
 
 .calculator {
-    background-color: #333; /* 计算器背景为深色 */
+    background-color: #333; /* 深色背景 */
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    width: 320px; /* 设置固定宽度 */
 }
 
 #display {
     width: 100%;
-    padding: 15px 10px;
-    font-size: 3em; /* 更大的字体 */
+    padding: 20px 10px;
+    font-size: 2.5em; /* 更大的字体 */
     text-align: right;
     border: none;
-    background-color: #444; /* 背景色更暗 */
+    background-color: #444; /* 背景色 */
     color: #fff;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px; /* 更大的底部间距 */
     box-sizing: border-box;
 }
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4列 */
-    gap: 10px;
-    max-width: 300px; /* 设置一个最大宽度 */
+    grid-template-columns: repeat(4, 1fr); /* 4列按钮布局 */
+    gap: 15px;
 }
 
 button {
-    padding: 15px;
-    font-size: 1.5em;
-    border-radius: 8px;
-    background-color: #555; /* 默认按钮颜色 */
+    padding: 20px;
+    font-size: 1.4em; /* 中等大小字体 */
+    border-radius: 10px;
+    background-color: #555; /* 默认按钮背景 */
     color: white;
     transition: background-color 0.2s ease;
-    height: 60px;
+    height: 70px; /* 高度适中 */
 }
 
 button.operator {
-    background-color: #f0ad4e; /* 操作符按钮的颜色 */
+    background-color: #f0ad4e; /* 操作符按钮颜色 */
 }
 
 button.equals {
     background-color: #5cb85c;
-    grid-column: span 2; /* 让“=”按钮跨两列 */
+    grid-column: span 2; /* 等号按钮跨两列 */
 }
 
 button.clear {
@@ -65,11 +65,11 @@ button.clear {
 }
 
 button.zero {
-    grid-column: span 2; /* 将零按钮跨两列 */
+    grid-column: span 2; /* 零按钮跨两列 */
 }
 
 .history-section {
-    width: 400px;
+    width: 350px;
     background-color: #fff;
     padding: 20px;
     border-radius: 12px;
