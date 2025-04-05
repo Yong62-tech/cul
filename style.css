@@ -9,23 +9,23 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center; /* 垂直居中 */
+    align-items: center; /* 保证垂直居中 */
     padding: 20px;
     gap: 40px;
 }
 
 .calculator {
     background-color: #333; /* 深色背景 */
-    padding: 20px;
-    border-radius: 15px;
+    padding: 30px;
+    border-radius: 20px; /* 更圆角 */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    width: 320px; /* 设置固定宽度 */
+    width: 400px; /* 计算器更宽 */
 }
 
 #display {
     width: 100%;
     padding: 20px 10px;
-    font-size: 2.5em; /* 更大的字体 */
+    font-size: 3em; /* 更大的字体 */
     text-align: right;
     border: none;
     background-color: #444; /* 背景色 */
@@ -37,18 +37,19 @@ body {
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4列按钮布局 */
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr); /* 四列布局 */
+    gap: 20px; /* 更大的间距 */
+    width: 100%; /* 按钮区域占满宽度 */
 }
 
 button {
-    padding: 20px;
-    font-size: 1.4em; /* 中等大小字体 */
+    padding: 25px;
+    font-size: 1.5em; /* 中等字体 */
     border-radius: 10px;
-    background-color: #555; /* 默认按钮背景 */
+    background-color: #555; /* 默认按钮颜色 */
     color: white;
     transition: background-color 0.2s ease;
-    height: 70px; /* 高度适中 */
+    height: 80px; /* 按钮高度 */
 }
 
 button.operator {
@@ -69,7 +70,7 @@ button.zero {
 }
 
 .history-section {
-    width: 350px;
+    width: 400px;
     background-color: #fff;
     padding: 20px;
     border-radius: 12px;
