@@ -19,7 +19,7 @@ body {
     padding: 30px;
     border-radius: 20px; /* 圆角 */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    width: 380px; /* 计算器宽度更合适 */
+    width: 380px; /* 计算器宽度 */
 }
 
 #display {
@@ -58,7 +58,7 @@ button.operator {
 
 button.equals {
     background-color: #5cb85c;
-    grid-column: span 2; /* 等号按钮跨两列 */
+    grid-column: span 1; /* 等号按钮仅占一列 */
 }
 
 button.clear {
@@ -67,6 +67,10 @@ button.clear {
 
 button.zero {
     grid-column: span 2; /* 零按钮跨两列 */
+}
+
+button.dot {
+    grid-column: span 1; /* 点按钮占一列，位于0的右侧 */
 }
 
 .history-section {
