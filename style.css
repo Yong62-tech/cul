@@ -33,35 +33,38 @@ body {
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 60px);
-    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr); /* 更均匀的按钮排列 */
+    gap: 10px;
+    max-width: 280px; /* 限制按钮区域的最大宽度 */
 }
 
 button {
-    padding: 15px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #eee;
+    padding: 20px;
+    font-size: 1.5em; /* 更大字体 */
+    border-radius: 8px;
+    background-color: #333;
+    color: white;
+    transition: background-color 0.2s ease;
+    height: 60px; /* 设置固定高度 */
 }
 
 button.operator {
-    background-color: #ffd966;
+    background-color: #f0ad4e; /* 操作符颜色 */
 }
 
 button.equals {
-    background-color: #9FE2BF;
-    grid-column: span 1;
+    background-color: #5cb85c;
+    grid-column: span 2; /* 合并等号按钮 */
 }
 
 button.clear {
-    background-color: #ff6666;
+    background-color: #d9534f; /* 清除按钮颜色 */
 }
 
 button.zero {
-    grid-column: span 2;
+    grid-column: span 2; /* 将零按钮跨两列 */
 }
+
 
 .history-section {
     width: 400px;
