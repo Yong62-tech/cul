@@ -9,76 +9,68 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center; /* 垂直居中 */
-    padding: 20px;
-    gap: 30px; /* 调整容器间距 */
+    align-items: flex-start;
+    padding: 40px;
+    gap: 40px;
 }
 
 .calculator {
-    background-color: #333; /* 计算器背景色 */
-    padding: 30px;
-    border-radius: 20px; /* 圆角 */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    width: 380px; /* 计算器宽度 */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 #display {
     width: 100%;
-    padding: 20px 10px;
-    font-size: 2.8em; /* 显示区域字体大一些 */
+    padding: 20px 15px; /* 增加内边距 */
+    font-size: 2.5em; /* 更大的字体 */
     text-align: right;
     border: none;
-    background-color: #444; /* 背景色 */
+    background-color: #444;
     color: #fff;
     border-radius: 10px;
-    margin-bottom: 20px; /* 增加底部间距 */
+    margin-bottom: 15px;
     box-sizing: border-box;
 }
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 四列布局 */
-    gap: 15px; /* 按钮间距 */
-    width: 100%;
+    grid-template-columns: repeat(4, 1fr); /* 更均匀的按钮排列 */
+    gap: 10px;
+    max-width: 280px; /* 限制按钮区域的最大宽度 */
 }
 
 button {
     padding: 20px;
-    font-size: 1.6em; /* 按钮字体大小 */
-    border-radius: 10px;
-    background-color: #555; /* 默认按钮背景 */
+    font-size: 1.5em; /* 更大字体 */
+    border-radius: 8px;
+    background-color: #333;
     color: white;
     transition: background-color 0.2s ease;
-    height: 70px; /* 按钮高度 */
+    height: 60px; /* 设置固定高度 */
 }
 
 button.operator {
-    background-color: #f0ad4e; /* 操作符按钮的颜色 */
+    background-color: #f0ad4e; /* 操作符颜色 */
 }
 
 button.equals {
     background-color: #5cb85c;
-    grid-column: span 1; /* 等号按钮仅占一列 */
+    grid-column: span 2; /* 合并等号按钮 */
 }
 
 button.clear {
-    background-color: #d9534f; /* 清除按钮的颜色 */
+    background-color: #d9534f; /* 清除按钮颜色 */
 }
 
 button.zero {
-    grid-column: span 2; /* 零按钮跨两列 */
+    grid-column: span 2; /* 将零按钮跨两列 */
 }
 
-button.dot {
-    grid-column: span 1; /* 点按钮占一列，位于0的右侧 */
-}
 
 .history-section {
-    width: 380px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
 }
 
 #history-table-container {
