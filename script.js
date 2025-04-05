@@ -1,4 +1,4 @@
-// --- script.js (使用 requestAnimationFrame 尝试解决滚动问题) ---
+// --- script.js (使用 scrollTo 尝试解决滚动问题) ---
 
 // 获取 DOM 元素 (保持不变)
 const display = document.getElementById('display');
@@ -15,7 +15,7 @@ let calculationHistory = [];
 let isResultDisplayed = false;
 
 // --- appendToDisplay, clearDisplay, deleteLast, calculateResult 函数保持不变 ---
-// (此处省略，与上个版本相同)
+// (省略，与上个版本相同)
 function appendToDisplay(value) {
     const operators = ['/', '*', '-', '+'];
     const isOperator = operators.includes(value);
@@ -135,14 +135,17 @@ function updateHistoryDisplay() {
         // console.warn("calculationHistory 不是有效的数组。");
     }
 
-    // **修改点：使用 requestAnimationFrame 来设置 scrollTop**
+    // **修改点：使用 scrollTo({ top: 0, behavior: 'instant' })**
     if (historyTableContainer) {
-        // 请求浏览器在下一次重绘前执行滚动操作
+        // 仍然建议在 requestAnimationFrame 中执行，以获得最佳时序
         requestAnimationFrame(() => {
-            console.log("在 requestAnimationFrame 中尝试滚动到顶部..."); // 调试日志
-            historyTableContainer.scrollTop = 0;
-            // 可以在这里再加一个 console.log 检查 scrollTop 是否真的为 0
-             console.log(`滚动后 scrollTop 值: ${historyTableContainer.scrollTop}`); // 调试日志
+            console.log("在 rAF 中尝试使用 scrollTo({ top: 0, behavior: 'instant' }) 滚动..."); // 调试日志
+            historyTableContainer.scrollTo({
+                top: 0, // 滚动到顶部
+                behavior: 'instant' // 立即滚动，无需平滑动画
+            });
+            // 检查 scrollTop 值是否真的变为 0
+            console.log(`滚动后 scrollTop 值: ${historyTableContainer.scrollTop}`); // 调试日志
         });
     } else {
         console.error("错误: updateHistoryDisplay 中 historyTableContainer 无效! 无法滚动。");
