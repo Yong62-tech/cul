@@ -1,103 +1,99 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 0;
-}
 
-.main-container {
+body {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px;
-    gap: 40px;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* 淡灰色背景 */
+    font-family: sans-serif;
 }
 
 .calculator {
-    background-color: #fff;
+    background-color: #333; /* 深灰色计算器背景 */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 320px;
 }
 
 #display {
-    width: 100%;
-    padding: 20px 15px; /* 增加内边距 */
-    font-size: 2.5em; /* 更大的字体 */
+    width: calc(100% - 20px); /* 减去 padding */
+    padding: 15px 10px;
+    font-size: 2em;
     text-align: right;
     border: none;
-    background-color: #444;
-    color: #fff;
-    border-radius: 10px;
+    background-color: #444; /* 稍浅的显示屏背景 */
+    color: #fff; /* 白色文字 */
+    border-radius: 5px;
     margin-bottom: 15px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* padding 不会增加宽度 */
 }
 
 .buttons {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 更均匀的按钮排列 */
-    gap: 10px;
-    max-width: 280px; /* 限制按钮区域的最大宽度 */
+    grid-template-columns: repeat(4, 1fr); /* 4 列等宽 */
+    gap: 10px; /* 按钮间距 */
 }
 
 button {
-    padding: 20px;
-    font-size: 1.5em; /* 更大字体 */
-    border-radius: 8px;
-    background-color: #333;
-    color: white;
-    transition: background-color 0.2s ease;
-    height: 60px; /* 设置固定高度 */
-}
-
-button.operator {
-    background-color: #f0ad4e; /* 操作符颜色 */
-}
-
-button.equals {
-    background-color: #5cb85c;
-    grid-column: span 2; /* 合并等号按钮 */
-}
-
-button.clear {
-    background-color: #d9534f; /* 清除按钮颜色 */
-}
-
-button.zero {
-    grid-column: span 2; /* 将零按钮跨两列 */
-}
-
-
-.history-section {
-    width: 400px;
-}
-
-#history-table-container {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-#clear-history {
-    margin-top: 10px;
-    padding: 10px;
-    font-size: 1em;
+    padding: 15px;
+    font-size: 1.2em;
     border: none;
-    border-radius: 6px;
-    background-color: #f77;
+    border-radius: 5px;
     cursor: pointer;
+    background-color: #555; /* 按钮默认背景 */
+    color: #fff; /* 按钮文字颜色 */
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #666; /* 鼠标悬停效果 */
+}
+
+button:active {
+    background-color: #777; /* 鼠标点击效果 */
+}
+
+.operator {
+    background-color: #f0ad4e; /* 橙色操作符 */
+    color: #fff;
+}
+
+.operator:hover {
+    background-color: #ec971f;
+}
+
+.operator:active {
+    background-color: #d58512;
+}
+
+.clear {
+    background-color: #d9534f; /* 红色清除按钮 */
+    color: #fff;
+}
+
+.clear:hover {
+    background-color: #c9302c;
+}
+
+.clear:active {
+    background-color: #ac2925;
+}
+
+.equals {
+    background-color: #5cb85c; /* 绿色等于按钮 */
+    color: #fff;
+    grid-row: span 2; /* 等于号按钮占两行 */
+}
+
+.equals:hover {
+    background-color: #4cae4c;
+}
+
+.equals:active {
+    background-color: #449d44;
+}
+
+.zero {
+    grid-column: span 2; /* 0 按钮占两列 */
 }
