@@ -1,0 +1,98 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* 淡灰色背景 */
+    font-family: sans-serif;
+}
+
+.calculator {
+    background-color: #333; /* 深灰色计算器背景 */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 320px;
+}
+
+#display {
+    width: calc(100% - 20px); /* 减去 padding */
+    padding: 15px 10px;
+    font-size: 2em;
+    text-align: right;
+    border: none;
+    background-color: #444; /* 稍浅的显示屏背景 */
+    color: #fff; /* 白色文字 */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box; /* padding 不会增加宽度 */
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 列等宽 */
+    gap: 10px; /* 按钮间距 */
+}
+
+button {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #555; /* 按钮默认背景 */
+    color: #fff; /* 按钮文字颜色 */
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #666; /* 鼠标悬停效果 */
+}
+
+button:active {
+    background-color: #777; /* 鼠标点击效果 */
+}
+
+.operator {
+    background-color: #f0ad4e; /* 橙色操作符 */
+    color: #fff;
+}
+
+.operator:hover {
+    background-color: #ec971f;
+}
+
+.operator:active {
+    background-color: #d58512;
+}
+
+.clear {
+    background-color: #d9534f; /* 红色清除按钮 */
+    color: #fff;
+}
+
+.clear:hover {
+    background-color: #c9302c;
+}
+
+.clear:active {
+    background-color: #ac2925;
+}
+
+.equals {
+    background-color: #5cb85c; /* 绿色等于按钮 */
+    color: #fff;
+    grid-row: span 2; /* 等于号按钮占两行 */
+}
+
+.equals:hover {
+    background-color: #4cae4c;
+}
+
+.equals:active {
+    background-color: #449d44;
+}
+
+.zero {
+    grid-column: span 2; /* 0 按钮占两列 */
+}
