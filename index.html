@@ -3,45 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>带历史记录的计算器</title>
+    <title>计算器与历史记录表</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="calculator">
-        <input type="text" id="display" readonly>
-        <div class="buttons">
-            <button onclick="clearDisplay()" class="clear">C</button>
-            <button onclick="deleteLast()" class="operator">DEL</button>
-            <button onclick="appendToDisplay('/')" class="operator">/</button>
-            <button onclick="appendToDisplay('*')" class="operator">*</button>
+    <div class="main-container">
 
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')" class="operator">-</button>
+        <div class="calculator">
+            <input type="text" id="display" readonly>
+            <div class="buttons">
+                <button onclick="clearDisplay()" class="clear">C</button>
+                <button onclick="deleteLast()" class="operator">DEL</button>
+                <button onclick="appendToDisplay('/')" class="operator">/</button>
+                <button onclick="appendToDisplay('*')" class="operator">*</button>
 
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('+')" class="operator">+</button>
+                <button onclick="appendToDisplay('7')">7</button>
+                <button onclick="appendToDisplay('8')">8</button>
+                <button onclick="appendToDisplay('9')">9</button>
+                <button onclick="appendToDisplay('-')" class="operator">-</button>
 
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="calculateResult()" class="equals" rowspan="2">=</button>
+                <button onclick="appendToDisplay('4')">4</button>
+                <button onclick="appendToDisplay('5')">5</button>
+                <button onclick="appendToDisplay('6')">6</button>
+                <button onclick="appendToDisplay('+')" class="operator">+</button>
 
-            <button onclick="appendToDisplay('0')" class="zero">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
+                <button onclick="appendToDisplay('1')">1</button>
+                <button onclick="appendToDisplay('2')">2</button>
+                <button onclick="appendToDisplay('3')">3</button>
+                <button onclick="calculateResult()" class="equals" rowspan="2">=</button>
+
+                <button onclick="appendToDisplay('0')" class="zero">0</button>
+                <button onclick="appendToDisplay('.')">.</button>
+            </div>
         </div>
-    </div>
 
-    <div class="history-container">
-        <h2>计算历史</h2>
-        <ul id="history-list">
-            </ul>
-        <button id="clear-history" onclick="clearHistoryLog()">清除历史</button>
-    </div>
+        <div class="history-section">
+            <h2>计算历史</h2>
+            <div class="history-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>表达式</th>
+                            <th>结果</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        </tbody>
+                </table>
+            </div>
+            <button id="clear-history" onclick="clearHistoryLog()">清除历史</button>
+        </div>
 
-    <script src="script.js"></script>
+    </div> <script src="script.js"></script>
 </body>
 </html>
