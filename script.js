@@ -1,13 +1,14 @@
 // 获取 DOM 元素
 const display = document.getElementById('display');
-const historyBody = document.getElementById('history-body'); // Target the tbody
+const historyBody = document.getElementById('history-body');
+const historyTableContainer = document.getElementById('history-table-container'); // 获取滚动容器
 
 // 用于存储历史记录的数组 (stores objects)
 let calculationHistory = [];
 // 标志，用于判断显示屏当前是否显示的是计算结果
 let isResultDisplayed = false;
 
-// --- appendToDisplay (再次修正) ---
+// --- appendToDisplay 函数 ---
 function appendToDisplay(value) {
     const operators = ['/', '*', '-', '+'];
     const isOperator = operators.includes(value);
@@ -16,109 +17,91 @@ function appendToDisplay(value) {
     // **核心逻辑：处理“=”之后首次输入的情况**
     if (isResultDisplayed) {
         if (isNumberOrDot) {
-            // 如果是结果状态，且第一个输入是数字或点，则清除旧结果，直接用新输入值替换显示内容
+            // 清除旧结果，用新输入值替换显示内容
             if (value === '.') {
-                display.value = '0.'; // 特殊处理直接输入小数点的情况
+                display.value = '0.'; // 特殊处理直接输入小数点
             } else {
                 display.value = value; // 用新数字替换结果
             }
             isResultDisplayed = false; // 清除标志
-            return; // **重要：** 替换了显示内容后，终止此函数，不执行后续的拼接逻辑
+            return; // **重要：** 替换后终止函数
         } else if (isOperator) {
-            // 如果是结果状态，且第一个输入是运算符，则不清除结果，只清除标志，
-            // 让后续的逻辑去拼接运算符
+            // 不清除结果，只清除标志，让后续逻辑拼接运算符
             isResultDisplayed = false;
-            // **重要：** 不在此处 return，让代码继续执行下面的拼接逻辑
+            // **重要：** 不 return，让代码继续执行
         }
-        // 如果输入不是数字/点或运算符，也重置标志（尽管当前计算器没有这种情况）
-        // else {
-        //     isResultDisplayed = false;
-        // }
     }
 
-    // --- 常规输入处理逻辑 (如果不是上面 return 的情况) ---
-
-    // 如果当前显示为 "错误", 则先清空
+    // --- 常规输入处理逻辑 ---
     if (display.value === '错误') {
-        clearDisplay(); // clearDisplay 会重置 isResultDisplayed
+        clearDisplay();
     }
 
-    // --- 输入验证和拼接 ---
     const lastChar = display.value.slice(-1);
     const lastIsOperator = operators.includes(lastChar);
 
-    // 1. 处理连续运算符: 如果最后一位是运算符，且新输入的也是运算符，则替换
+    // 处理连续运算符
     if (lastIsOperator && isOperator) {
         display.value = display.value.slice(0, -1) + value;
         return;
     }
 
-    // 2. 处理小数点
+    // 处理小数点
     if (value === '.') {
-        // 检查当前数字段是否已有小数点
-        // 通过运算符分割字符串，取最后一段
         const currentSegment = display.value.split(/[\/*+-]/).pop();
         if (currentSegment.includes('.')) {
-            return; // 当前段已有小数点，阻止输入
+            return;
         }
-        // 如果显示为空，或者前一位是运算符，则自动补 '0'
         if (display.value === '' || lastIsOperator) {
             display.value += '0.';
-            return; // 已经添加了 '0.'，结束
+            return;
         }
-        // 其他情况，允许添加小数点（由最后的 display.value += value 处理）
     }
 
-    // 3. 处理前导零：如果当前显示是 '0'，且输入的不是 '.', 则用新输入替换 '0'
+    // 处理前导零
     if (display.value === '0' && value !== '.') {
         display.value = value;
         return;
     }
 
-    // 4. 默认追加: 如果以上特殊情况都未处理并返回，则将输入值追加到末尾
+    // 默认追加
     display.value += value;
 }
 
-
-// --- clearDisplay (保持不变, 但确认包含 isResultDisplayed = false) ---
+// --- clearDisplay 函数 ---
 function clearDisplay() {
     display.value = '';
     isResultDisplayed = false; // 重置标志
 }
 
-// --- deleteLast (保持不变, 但确认包含 isResultDisplayed = false) ---
+// --- deleteLast 函数 ---
 function deleteLast() {
     if (display.value === '错误') {
-        clearDisplay(); // clearDisplay 内部会重置标志
+        clearDisplay();
     } else {
-        // 检查删除后是否为空，或者是否只剩下负号
         const newValue = display.value.slice(0, -1);
          if (newValue === '' || newValue === '-') {
-            display.value = ''; // 如果删除后为空或只剩负号，则清空
+            display.value = '';
          } else {
             display.value = newValue;
          }
-
-        isResultDisplayed = false; // 删除操作后，不再是单纯的结果显示状态
+        isResultDisplayed = false; // 删除操作后重置标志
     }
 }
 
-// --- calculateResult (保持不变, 但确认包含 isResultDisplayed 标志设置) ---
+// --- calculateResult 函数 ---
 function calculateResult() {
     const expression = display.value;
-    // 防止对空、只有负号、错误状态或只有操作符结尾的表达式进行计算
      if (!expression || expression === '-' || expression === '错误' || ['/', '*', '-', '+'].includes(expression.slice(-1))) {
           return;
      }
 
     try {
-        // 注意： new Function 有安全风险，但对于简单计算器可接受
         const calculate = new Function('return ' + expression);
         let result = calculate();
 
-        // 处理精度和无效结果
         if (typeof result === 'number' && !Number.isInteger(result)) {
-            result = parseFloat(result.toFixed(10)); // 控制小数位数
+            result = parseFloat(result.toFixed(10));
         }
         if (!Number.isFinite(result)) {
              throw new Error("结果无效");
@@ -128,8 +111,7 @@ function calculateResult() {
         display.value = resultString;
         isResultDisplayed = true; // **设置标志：表示显示的是结果**
 
-        // 添加历史记录
-        addToHistory({ expression: expression, result: resultString });
+        addToHistory({ expression: expression, result: resultString }); // 添加历史记录
 
     } catch (error) {
         console.error("Calculation Error:", error);
@@ -138,29 +120,37 @@ function calculateResult() {
     }
 }
 
-// --- History Functions (保持不变) ---
+// --- History Functions ---
 function addToHistory(entryObject) {
-    calculationHistory.unshift(entryObject);
-    updateHistoryDisplay();
+    calculationHistory.unshift(entryObject); // 添加到数组开头
+    updateHistoryDisplay(); // 更新表格显示
 }
 
 function updateHistoryDisplay() {
+    // 清空现有表格行
     historyBody.innerHTML = '';
+
+    // 用历史数据填充表格
     calculationHistory.forEach(entry => {
-        const row = historyBody.insertRow(0);
+        const row = historyBody.insertRow(0); // 在 tbody 的最顶部插入新行
         const cellExpression = row.insertCell(0);
         const cellResult = row.insertCell(1);
         cellExpression.textContent = entry.expression;
         cellResult.textContent = entry.result;
     });
+
+    // **自动滚动到顶部**
+    if (historyTableContainer) { // 确保元素已获取
+        historyTableContainer.scrollTop = 0; // 将滚动条设置到顶部
+    }
 }
 
 function clearHistoryLog() {
-    calculationHistory = [];
-    updateHistoryDisplay();
+    calculationHistory = []; // 清空数组
+    updateHistoryDisplay(); // 更新显示 (表格变为空，滚动条也会回到顶部)
 }
 
-// --- Optional LocalStorage functions (保持不变) ---
+// --- Optional LocalStorage functions ---
 // function loadHistory() { ... }
 // function saveHistory() { ... }
 // window.onload = loadHistory;
