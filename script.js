@@ -35,21 +35,22 @@ function updateHistoryDisplay() {
     historyBody.innerHTML = '';
 
     calculationHistory.forEach(entry => {
-        const row = historyBody.insertRow(); // 添加到底部
+        const row = historyBody.insertRow();
         const cellExpression = row.insertCell(0);
         const cellResult = row.insertCell(1);
         cellExpression.textContent = entry.expression;
         cellResult.textContent = entry.result;
     });
 
-requestAnimationFrame(() => {
-    historyTableContainer.scrollTo({
-        top: historyTableContainer.scrollHeight,
-        behavior: 'auto'  // 或 'smooth'，看你喜好
-    });
-});
-
+    // 使用 setTimeout 延迟滚动
+    setTimeout(() => {
+        historyTableContainer.scrollTo({
+            top: historyTableContainer.scrollHeight,
+            behavior: 'auto' // 或 'smooth'
+        });
+    }, 0); // 延迟 0 毫秒
 }
+
 
 function clearHistoryLog() {
     calculationHistory = [];
